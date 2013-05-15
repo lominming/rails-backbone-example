@@ -1,0 +1,13 @@
+<p id="notice"><%= notice %></p>
+
+<h4><%= @post.title %></h4>
+<h6>by <%= @post.name %></h6>
+
+<p>
+  <%= @post.content %>
+</p>
+
+<p>Post is flagged? <%= @post.flag %></p>
+
+<%= link_to 'Edit', edit_post_path(@post) %> |
+<%= link_to 'Back', posts_path %>

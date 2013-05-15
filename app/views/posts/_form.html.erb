@@ -1,0 +1,30 @@
+<%= form_for(@post) do |f| %>
+  <% if @post.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+      <% @post.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+
+    <%= f.label :content %>
+    <%= f.text_area :content %>
+
+    <%= f.label :flag %>
+    <%= f.check_box :flag, {:checked => @post.flag}, 1, 0 %>    
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

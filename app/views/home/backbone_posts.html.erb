@@ -1,0 +1,162 @@
+<h1>All Posts powered by Backbone.js</h1>
+<ul class="all-posts">
+</ul>
+<a class="btn" data-toggle="modal" href="#modal-new-post">New Post</a>
+
+<!-- New Post Modal -->
+
+<div id="modal-new-post" class="modal fade hide">
+
+  <div class="modal-header">
+    <a href="#" class="close" data-dismiss="modal">&times;</a>
+    <h3>Create a new post</h3>
+  </div>
+
+  <div class="modal-body">
+
+    <form>
+      <label>Name</label>
+      <input id="new-post-name" />
+      <label>Title</label>
+      <input id="new-post-title" />
+      <label>Content</label>
+      <textarea id="new-post-content" ></textarea>
+    </form>
+
+  </div>
+
+  <div class="modal-footer">
+    <a id="add-post-button" class="btn btn-primary">Create Post</a>
+  </div>
+
+</div>
+
+<!-- Item Template for Backbone -->
+
+<script type="text/template" id="post_item_template">
+  <h4 class="{{= post.get("flag") ? "flagged" : "" }}">{{= post.get("id") }}: {{= post.get("title") }}</h4>
+  <h6>by {{= post.get("name") }}</h6>
+  <p>
+    {{= post.get("content") }}
+  </p>
+  <p>
+    <a class="show-post">Show post</a> | 
+    <a class="edit-post">Edit post</a> |  
+    <a class="delete-post">Delete post</a> |  
+    <a class="flag-post">Flag post</a>
+  </p>
+</script>
+
+<script>
+
+  _.templateSettings = {
+      interpolate: /\{\{\=(.+?)\}\}/g,
+      escape: /\{\{\-(.+?)\}\}/g,
+      evaluate: /\{\{(.+?)\}\}/g
+  };
+
+  // Scenario:
+  // I have a collection (PostList) of posts (PostItem)
+  // PostList is a collection. PostItem is a model.
+  // Collections hold a list of models.
+  // Both PostItem and PostList have their own views.
+
+  // Model (an item)
+  var PostItem = Backbone.Model.extend({
+    // Default attributes
+    defaults: function() {
+      return {
+        title: "",
+        content: "",
+        name: "New User"
+      };
+    },
+    urlRoot: function() {
+      return '/posts';
+    }
+  });
+
+  // Collection (a list to hold multiple items)
+  var PostList = Backbone.Collection.extend({
+    model: PostItem, // Reference to this collection's model
+    url: function() {
+      return '/posts';
+    },
+  });
+
+  // Model View
+  var PostItemView = Backbone.View.extend({
+
+    tagName:  "li", // A tag name for this model. Important!
+    template: _.template($('#post_item_template').html()), 
+
+    events: {
+      "click .delete-post"      : "deletePost",
+      "click .show-post"      : "showPost",
+      "click .flag-post"      : "toggleFlag"
+    },
+
+    initialize: function() {
+      this.model.on('change', this.render, this);
+      this.model.on('destroy', this.remove, this);
+    },
+
+    render: function() {
+      $(this.el).html(this.template( { post: this.model } ));
+      return this;
+    },
+
+    remove: function() {
+      $(this.el).fadeOut(300, function() { $(this).remove(); });
+    },
+
+    deletePost: function() {
+      this.model.destroy();
+    },
+
+    showPost: function() {
+
+    },
+
+    toggleFlag: function() {
+      this.model.set("flag", !this.model.get("flag"));
+      this.model.save();
+    }
+
+  });
+
+  // Collection View
+  var PostListView = Backbone.View.extend({
+    el: ".all-posts",
+    events: {
+    },
+    initialize: function() {
+      _.bindAll(this, 'addPostItem', 'render');
+      this.collection.bind('add', this.addPostItem);
+      this.collection.bind('reset', this.render, this); //Reset called after fetch
+    },
+    render: function() {
+      $(this.el).html("");
+      this.collection.each(this.addPostItem);
+      return this;
+    },
+    addPostItem: function(item) {
+      var post_item_view = new PostItemView({model: item});
+      $(this.el).append(post_item_view.render().el);
+    }
+  });   
+
+  $("#add-post-button").on("click",function() {
+    post_list.create({
+      title: $("#new-post-title").val(), 
+      name: $("#new-post-name").val(), 
+      content: $("#new-post-content").val()
+    });  
+    $("#modal-new-post").modal("hide");
+  });
+
+  post_list = new PostList();
+  post_list_view = new PostListView({collection: post_list});
+  post_list.fetch({reset:true});
+
+</script>
