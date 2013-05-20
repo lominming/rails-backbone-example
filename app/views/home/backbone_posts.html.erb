@@ -100,6 +100,7 @@
     },
 
     render: function() {
+      // For each of the item, we will render the model base on the Underscore template
       $(this.el).html(this.template( { post: this.model } ));
       return this;
     },
@@ -139,10 +140,12 @@
     },
     render: function() {
       $(this.el).html("");
+      // Loop through the collection, for each model, addPostItem is called
       this.collection.each(this.addPostItem);
       return this;
     },
     addPostItem: function(item) {
+      // Base on the item, we will create a model, render it, and append to the main element
       var post_item_view = new PostItemView({model: item});
       $(this.el).append(post_item_view.render().el);
     }
