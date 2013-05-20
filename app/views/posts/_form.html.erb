@@ -19,7 +19,7 @@
     <%= f.text_field :title %>
 
     <%= f.label :content %>
-    <%= f.text_area :content %>
+    <%= f.text_area :content, :size => "30x6" %>
 
     <%= f.label :flag %>
     <%= f.check_box :flag, {:checked => @post.flag}, 1, 0 %>    

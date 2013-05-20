@@ -1,0 +1,40 @@
+<h1>Router History Example</h1>
+
+<h2>Backbone Router</h2>
+<p>We can change the URL location and inject a new history state. Back button will still work after each link. Try each of this links!</p>
+<p id="sample-links">
+  <a data-suit="spades">Spades</a>
+  <a data-suit="hearts">Hearts</a>
+  <a data-suit="clubs">Clubs</a>
+  <a data-suit="diamonds">Diamonds</a>
+</p>
+
+<div id="sample-content"><p>We are now on page: </p><h2></h2></div>
+
+<script>
+
+  $("#sample-links a").on("click", function() {
+    app_router.navigate('home/router/' + $(this).data("suit"), true);
+  });
+
+  var AppRouter = Backbone.Router.extend({
+    routes: {
+        "home/router": "goToSuit",
+        "home/router/:suit": "goToSuit",
+        "*actions": "defaultRoute"
+    },
+    goToSuit: function(suit) {
+      if (suit) {
+        $("#sample-content h2").html(suit);
+      } else {
+        $("#sample-content h2").html("");
+      }
+    },
+    defaultRoute: function(actions) {
+    }
+  });
+
+  var app_router = new AppRouter;
+  Backbone.history.start({pushState: true});  
+
+</script>

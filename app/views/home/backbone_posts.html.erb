@@ -68,20 +68,17 @@
       return {
         title: "",
         content: "",
-        name: "New User"
+        name: "New User",
+        flag: false
       };
     },
-    urlRoot: function() {
-      return '/posts';
-    }
+    urlRoot: '/posts'
   });
 
   // Collection (a list to hold multiple items)
   var PostList = Backbone.Collection.extend({
     model: PostItem, // Reference to this collection's model
-    url: function() {
-      return '/posts';
-    },
+    url: '/posts'
   });
 
   // Model View
@@ -91,7 +88,8 @@
     template: _.template($('#post_item_template').html()), 
 
     events: {
-      "click .delete-post"      : "deletePost",
+      "click .delete-post"    : "deletePost",
+      "click .edit-post"      : "editPost",
       "click .show-post"      : "showPost",
       "click .flag-post"      : "toggleFlag"
     },
@@ -114,8 +112,12 @@
       this.model.destroy();
     },
 
-    showPost: function() {
+    editPost: function() {
+      alert("Edit Post is not done. You may try to implement this function as an exercise.");
+    },
 
+    showPost: function() {
+      window.location.href = "/posts/" + this.model.get("id");
     },
 
     toggleFlag: function() {

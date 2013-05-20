@@ -2,21 +2,27 @@
 <html>
 <head>
   <title>Blog</title>
+  <%= csrf_meta_tags %>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
-  <%= csrf_meta_tags %>
 </head>
 <body>
 
-    <div class="header">
-  		<div class="container">
-    		<h3><a href="/">Beginning Boostrap.js</a></h3>
-    	</div>
-    </div>
+  <div class="header">
+		<div class="container">
+      <h3><a href="/">Beginning Boostrap.js</a></h3>
+  	</div>
+  </div>
 
 	<div class="container">
     	<%= yield %>
 	</div>
+
+  <div class="footer">
+    <div class="container">
+      <p>Questions? <a href="mailto:minming@minming.net">minming@minming.net</a></p>
+    </div>
+  </div>
 
 </body>
 </html>

@@ -11,7 +11,7 @@
       <p>
         <%= link_to "View post", post %> | 
         <%= link_to 'Edit post', edit_post_path(post) %> | 
-        <%= link_to 'Delete', post, method: :delete, data: { confirm: 'Are you sure?' } %>
+        <%= link_to 'Delete', post, method: :delete %>
       </p>
     </li>   
   <% end %>
@@ -19,3 +19,47 @@
 
 
 <%= link_to 'New Post', new_post_path, :class => "btn" %>
+
+<div class="new-post-ajax">
+  <form>
+    <label>Name</label>
+    <input id="new-post-name" name="post[name]" />
+    <label>Title</label>
+    <input id="new-post-title" name="post[title]" />
+    <label>Content</label>
+    <textarea id="new-post-content" name="post[content]" ></textarea>
+  </form>
+  <a id="new-post-ajax" class="btn">New Post (through AJAX)</a>
+</div>
+
+  
+<script>
+  
+  $("#new-post-ajax").on("click", function() {
+
+    // create data object to sent
+    var newPost = new Object();
+    newPost.name = $("#new-post-name").val();
+    newPost.title = $("#new-post-title").val();
+    newPost.content = $("#new-post-content").val();
+    newPost.flag = false;
+
+    // ajax request to server
+    $.ajax({
+      url: "/posts",
+      dataType: "json",
+      method: "post",
+      data: {
+        post: newPost
+      },      
+      success: function( data ) {
+        // on success, we need to append the new item
+        $(".all-posts").append("<li><h4>"+data.title+"</h4><h6>by "+data.name+"</h6><p>"+data.content+"</p><p><a href='/posts/"+data.id+"'>View post</a> | <a href='/posts/"+data.id+"/edit'>Edit post</a> | <a href='/posts/"+data.id+"' data-method='delete' rel='nofollow'>Delete</a></p></li>");
+      },
+      error: function(response) {
+        console.log("OOPS");
+      }
+    });    
+  });
+
+</script>

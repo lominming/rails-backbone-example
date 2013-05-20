@@ -15,26 +15,46 @@
 .header {
 	background: #efefef;
 	color: #999;
+	padding: 10px 0;
+	margin-bottom: 20px;
+}
+.footer {
+	margin-top: 30px;
+	border-top: 1px solid #ddd;
+	color: #999;
+	padding: 20px 0;
+	text-align: right;
+}
+
+#sample-content {
+	background: #efefef;
+	padding: 20px;
+}
+
+.new-post-ajax {
+	background: #efefef;
+	padding: 20px;
+	margin: 20px 0;
 }
 
 ul.all-posts {
 	list-style: none;
 	margin: 0;
 	li {
-		border-bottom: 1px solid #ccc;
+		background: #efefef;
+		padding: 20px;
 		margin-bottom: 20px;
 		h4 {
 			&.flagged {
-				background: #0088cc;
-				color: white;
+				padding-left: 10px;
+				border-left: 15px solid #0088cc;
 			}
 		}
 	}
 }
 
 h1 {
-	border-bottom: 4px solid #333;
-	margin-bottom: 20px;
+	margin-bottom: 30px;
 }
 
 a {

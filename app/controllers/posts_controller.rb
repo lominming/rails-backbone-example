@@ -41,6 +41,7 @@ class PostsController < ApplicationController
   # POST /posts.json
   def create
     # sleep(5.0)
+
     @post = Post.new(params[:post])
 
     respond_to do |format|
